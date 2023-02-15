@@ -28,8 +28,8 @@ RSpec.describe Gradebook do
   describe '#add_course' do
     it 'can add a course to instructors gradebook' do
       @gradebook1.add_course(@calculus)
-      @gradebook1.add_course(@lin_al)
 
+      expect(@gradebook1.add_course(@lin_al)).to eq([@calculus, @lin_al])
       expect(@gradebook1.courses).to eq([@calculus, @lin_al])
     end
   end
