@@ -6,4 +6,14 @@ class Course
     @capacity = capacity
     @students = []
   end
+
+  def full?
+    @students.length == @capacity
+  end
+
+  def enroll(student)
+    return 'The course is full.' if full?
+
+    @students << student
+  end
 end
