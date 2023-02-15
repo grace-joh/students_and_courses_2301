@@ -6,6 +6,7 @@ RSpec.describe Gradebook do
     @gradebook2 = Gradebook.new('Dallas Williams')
     @calculus = Course.new('Calculus', 2)
     @algebra = Course.new('Algebra', 4)
+    @ceramics = Course.new('Ceramics', 4)
     @student1 = Student.new({ name: 'Morgan', age: 21 })
     @student2 = Student.new({ name: 'Jordan', age: 29 })
     @student3 = Student.new({ name: 'Grace', age: 31 })
@@ -43,6 +44,41 @@ RSpec.describe Gradebook do
       @gradebook1.add_course(@algebra)
 
       expect(@gradebook1.list_all_students).to eq({ Calculus: [@student1, @student2], Algebra: [@student3] })
+    end
+
+    it 'can return an alert if no courses have been added' do
+      expect(@gradebook2.list_all_students).to eq('No courses have been added.')
+    end
+  end
+
+  describe '#students_below' do
+    before(:each) do
+      @gradebook1.add_course(@calculus)
+      @gradebook1.add_course(@algebra)
+      @student1.log_score(100)
+      @student1.log_score(80)
+      @student2.log_score(90)
+      @student2.log_score(80)
+      @student3.log_score(30)
+      @student3.log_score(80)
+    end
+
+    it 'can return a list of students whose grades are below a given threshold' do
+      expect(@gradebook1.students_below(70)).to eq([@student3])
+    end
+
+    it 'can return an alert if all students are above threshold' do
+      expect(@gradebook1.students_below(20)).to eq('All student averages are above 20.')
+    end
+
+    it 'can return an alert if no courses have been added' do
+      expect(@gradebook2.students_below(90)).to eq('No courses have been added.')
+    end
+
+    it 'can return an alert if no students are enrolled' do
+      @gradebook2.add_course(@ceramics)
+
+      expect(@gradebook2.students_below(90)).to eq('No students are currently enrolled.')
     end
   end
 end
