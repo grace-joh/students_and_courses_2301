@@ -30,4 +30,18 @@ RSpec.describe Student do
       expect(@student1.scores).to eq([89, 78])
     end
   end
+
+  describe '#grade' do
+    it 'can find the average grade of scores' do
+      @student1.log_score(89)
+      @student1.log_score(78)
+      @student1.log_score(78)
+
+      expect(@student1.grade).to eq(81.67)
+    end
+
+    it 'can return nil if there are no scores' do
+      expect(@student1.grade).to be_nil
+    end
+  end
 end
